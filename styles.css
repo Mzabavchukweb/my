@@ -3946,7 +3946,24 @@ section {
         font-size: 0.8rem;
     }
     
-    /* DISABLE ALL PROBLEMATIC ANIMATIONS ON MOBILE */
+    /* NUCLEAR DISABLE ALL ANIMATIONS ON MOBILE */
+    * {
+        animation: none !important;
+        transform: none !important;
+        transition: none !important;
+        will-change: auto !important;
+        backface-visibility: visible !important;
+    }
+    
+    /* Only allow essential transitions */
+    .nav-link,
+    .btn,
+    .project-card,
+    .lang-toggle {
+        transition: opacity 0.2s ease !important;
+    }
+    
+    /* Disable all problematic effects */
     .glitch,
     .glitch::before,
     .glitch::after,
@@ -3984,10 +4001,12 @@ section {
     .divider-pulse,
     .year-glow,
     .cookie-icon,
-    .legal-icon {
+    .legal-icon,
+    *::before,
+    *::after {
         animation: none !important;
         transform: none !important;
-        transition: opacity 0.2s ease, transform 0.2s ease !important;
+        transition: none !important;
     }
     
     /* Hide cursor effects completely */

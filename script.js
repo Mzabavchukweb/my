@@ -157,6 +157,9 @@ class AdvancedCursor {
     animate() {
         if (this.isMobile) return; // Skip animation on mobile
         
+        // Double check mobile detection
+        if (window.innerWidth <= 768 || 'ontouchstart' in window) return;
+        
         // Much slower, smoother trail following
         this.trailX += (this.mouseX - this.trailX) * 0.05; // Reduced from 0.1
         this.trailY += (this.mouseY - this.trailY) * 0.05;
@@ -528,6 +531,11 @@ class Navigation {
 // Scroll Animations
 class ScrollAnimations {
     constructor() {
+        // Disable on mobile to prevent scroll interference
+        if (window.innerWidth <= 768 || 'ontouchstart' in window) {
+            console.log('ScrollAnimations disabled on mobile');
+            return;
+        }
         this.init();
     }
     
@@ -1659,8 +1667,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
         
-        // Cookie Management
-        const cookieManager = new CookieManager();
+        // Cookie Management - moved to after loading animation
         
         // Visual effects
         const glitchEffect = new GlitchEffect();
@@ -2026,23 +2033,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadingScreen.classList.add('fade-out');
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
+                    
+                    // Initialize Cookie Manager AFTER loading animation is completely done
+                    setTimeout(() => {
+                        const cookieManager = new CookieManager();
+                        console.log('Cookie Manager initialized AFTER loading animation');
+                        window.resetForTesting = () => cookieManager.resetForTesting();
+                    }, 1000); // 1s after loading screen disappears
+                    
                 }, 1000);
             }
         }, 5000); // Show for 5 seconds (slower loading)
     } else {
-        // Returning visitor - hide loading screen immediately
+        // Returning visitor - hide loading screen immediately but still wait before cookie banner
         console.log('Returning visitor - skipping loading screen');
         if (loadingScreen) {
             loadingScreen.style.display = 'none';
         }
+        
+        // Initialize Cookie Manager for returning users after short delay
+        setTimeout(() => {
+            const cookieManager = new CookieManager();
+            console.log('Cookie Manager initialized for returning user');
+            window.resetForTesting = () => cookieManager.resetForTesting();
+        }, 1000); // 1s delay even for returning users
     }
     
-    // Initialize Cookie Manager
-    const cookieManager = new CookieManager();
-    console.log('Cookie Manager initialized');
-    
-    // Make reset method available globally for testing
-    window.resetForTesting = () => cookieManager.resetForTesting();
+    // Cookie Manager initialization moved to after loading animation completes
     
     // Initialize other components
     const navigation = new Navigation();
