@@ -14,10 +14,17 @@
     }
 }
 
-/* Force slower animations globally to prevent shaking */
+/* Elegant smooth animations globally */
 * {
-    animation-duration: 2s !important;
     animation-timing-function: ease-in-out !important;
+}
+
+/* Smooth background animations */
+.matrix-grid,
+.floating-code,
+.tech-particles,
+.matrix-column {
+    animation-timing-function: linear !important;
 }
 
 /* Smooth scrolling for section navigation */
@@ -1699,7 +1706,7 @@ body {
         transparent 0%,
         var(--neon-green) 10%,
         transparent 20%);
-    animation: matrixRain 8s linear infinite;
+    animation: matrixRain 20s linear infinite; /* Ultra smooth - much slower */
     opacity: 0.3;
     font-family: var(--font-mono);
 }
@@ -2381,7 +2388,7 @@ section {
         linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 100px 100px;
-    animation: matrixScroll 30s linear infinite;
+    animation: matrixScroll 60s linear infinite; /* Ultra smooth - doubled time */
     opacity: 0.3;
 }
 
@@ -2399,7 +2406,7 @@ section {
     font-family: var(--font-mono);
     font-size: 0.9rem;
     opacity: 0.6;
-    animation: floatCode 8s ease-in-out infinite;
+    animation: floatCode 15s ease-in-out infinite; /* Ultra smooth floating */
     text-shadow: 0 0 10px currentColor;
 }
 
@@ -2434,7 +2441,7 @@ section {
     height: 6px;
     background: var(--neon-pink);
     border-radius: 50%;
-    animation: techFloat 6s ease-in-out infinite;
+    animation: techFloat 12s ease-in-out infinite; /* Ultra smooth particles */
     box-shadow: 0 0 15px currentColor;
 }
 
@@ -3946,14 +3953,8 @@ section {
         font-size: 0.8rem;
     }
     
-    /* NUCLEAR DISABLE ALL ANIMATIONS ON MOBILE */
-    * {
-        animation: none !important;
-        transform: none !important;
-        transition: none !important;
-        will-change: auto !important;
-        backface-visibility: visible !important;
-    }
+    /* SMART DISABLE - Keep elegant background effects */
+    /* Disable only problematic animations, keep smooth background */
     
     /* Only allow essential transitions */
     .nav-link,
@@ -3963,50 +3964,36 @@ section {
         transition: opacity 0.2s ease !important;
     }
     
-    /* Disable all problematic effects */
+    /* Disable ONLY scroll-interfering effects, keep smooth background */
     .glitch,
     .glitch::before,
     .glitch::after,
     .cursor-trail,
     .cursor-follower,
-    .tech-particles,
-    .floating-code,
-    .matrix-grid,
     .fab-main,
     .core-ring,
     .orbit,
-    .particle,
-    .wave,
-    .energy-line,
-    .matrix-column,
-    .scanline,
-    .epic-title,
-    .hero-title,
     .typing,
     .cursor,
-    .scroll-indicator,
-    .tech-matrix-bg,
-    .floating-code-item,
-    .tech-particle,
-    .skill-icon,
-    .energy-bar,
-    .power-indicator,
-    .footer-bg-effects,
-    .footer-particle,
-    .footer-wave,
-    .logo-energy,
-    .tagline-glow,
-    .social-energy,
-    .orb-ring,
-    .divider-pulse,
-    .year-glow,
-    .cookie-icon,
-    .legal-icon,
-    *::before,
-    *::after {
+    .scroll-indicator {
         animation: none !important;
         transform: none !important;
         transition: none !important;
+    }
+    
+    /* Allow smooth background effects on mobile */
+    .tech-particles,
+    .floating-code,
+    .matrix-grid,
+    .tech-matrix-bg,
+    .floating-code-item,
+    .tech-particle,
+    .matrix-column,
+    .footer-bg-effects,
+    .footer-particle {
+        animation-duration: 20s !important; /* Ultra slow on mobile */
+        animation-timing-function: linear !important;
+        opacity: 0.2 !important; /* Very subtle */
     }
     
     /* Hide cursor effects completely */

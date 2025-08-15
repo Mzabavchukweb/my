@@ -1,8 +1,8 @@
 // Matrix Effect for Background
 class MatrixEffect {
     constructor() {
-        // Disabled completely to prevent performance issues and shaking
-        return;
+        // Enable with ULTRA SMOOTH settings
+        this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
         
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d');
@@ -531,11 +531,7 @@ class Navigation {
 // Scroll Animations
 class ScrollAnimations {
     constructor() {
-        // Disable on mobile to prevent scroll interference
-        if (window.innerWidth <= 768 || 'ontouchstart' in window) {
-            console.log('ScrollAnimations disabled on mobile');
-            return;
-        }
+        this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
         this.init();
     }
     
@@ -593,14 +589,20 @@ class ScrollAnimations {
     handleIntersection(entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                // On mobile, use subtle animations only
+                if (this.isMobile) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                } else {
+                    entry.target.classList.add('visible');
+                }
                 
-                // Animate skill bars
+                // Animate skill bars (always smooth)
                 if (entry.target.classList.contains('skills-category')) {
                     this.animateSkillBars(entry.target);
                 }
                 
-                // Animate stats
+                // Animate stats (always smooth)
                 if (entry.target.classList.contains('hero-stats')) {
                     this.animateStats();
                 }
