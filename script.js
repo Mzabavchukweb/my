@@ -1,6 +1,13 @@
 // Matrix Effect for Background
 class MatrixEffect {
     constructor() {
+        // Disable on mobile devices
+        this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+        
+        if (this.isMobile) {
+            return; // Exit early on mobile
+        }
+        
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d');
         this.matrixBg = document.getElementById('matrixBg');
@@ -60,6 +67,13 @@ class MatrixEffect {
 // Advanced Cursor System
 class AdvancedCursor {
     constructor() {
+        // Disable on mobile devices
+        this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+        
+        if (this.isMobile) {
+            return; // Exit early on mobile
+        }
+        
         this.trail = document.getElementById('cursorTrail');
         this.followers = [
             document.getElementById('follower1'),
@@ -169,104 +183,115 @@ class AdvancedCursor {
     }
 }
 
-// Language Switching
-class LanguageSwitcher {
+// Simple Language Toggle
+class LanguageToggle {
     constructor() {
-        this.currentLang = 'pl';
-        this.elements = document.querySelectorAll('[data-pl][data-en][data-de]');
-        this.switcher = document.getElementById('languageSwitcher');
-        this.dropdown = document.getElementById('langDropdown');
-        this.currentDisplay = document.getElementById('langCurrent');
-        this.flags = {
-            pl: '🇵🇱',
-            en: '🇺🇸', 
-            de: '🇩🇪'
-        };
+        this.currentLang = 'pl'; // Default Polish
+        this.elements = document.querySelectorAll('[data-pl][data-en]');
+        this.toggle = document.getElementById('langToggle');
+        this.langText = this.toggle?.querySelector('.lang-text');
         this.init();
     }
     
     init() {
-        if (this.switcher) {
-            // Toggle dropdown on click
-            this.currentDisplay.addEventListener('click', (e) => {
-                e.stopPropagation();
-                this.toggleDropdown();
-            });
-            
-            // Handle language option clicks
-            const langOptions = this.dropdown.querySelectorAll('.lang-option');
-            langOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.dataset.lang;
-                    this.switchLanguage(lang);
-                    this.closeDropdown();
-                });
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', () => {
-                this.closeDropdown();
-            });
-            
-            // Load saved language
+        if (this.toggle) {
+            // Load saved language or default to Polish
             const savedLang = localStorage.getItem('preferredLanguage') || 'pl';
-            this.switchLanguage(savedLang);
+            this.setLanguage(savedLang);
+            
+            // Handle toggle click
+            this.toggle.addEventListener('click', () => {
+                this.toggleLanguage();
+            });
         }
     }
     
-    toggleDropdown() {
-        this.switcher.classList.toggle('open');
+    toggleLanguage() {
+        // Add switching animation
+        this.toggle.classList.add('switching');
+        
+        // Switch between PL and ENG
+        const newLang = this.currentLang === 'pl' ? 'en' : 'pl';
+        
+        // Smooth transition with delay
+        setTimeout(() => {
+            this.setLanguage(newLang);
+            this.toggle.classList.remove('switching');
+        }, 300);
     }
     
-    closeDropdown() {
-        this.switcher.classList.remove('open');
-    }
-    
-    updateCurrentDisplay() {
-        const flag = this.currentDisplay.querySelector('.flag');
-        const code = this.currentDisplay.querySelector('.lang-code');
-        
-        if (flag && code) {
-            flag.textContent = this.flags[this.currentLang];
-            code.textContent = this.currentLang.toUpperCase();
-        }
-        
-        // Update active option
-        const options = this.dropdown.querySelectorAll('.lang-option');
-        options.forEach(option => {
-            option.classList.toggle('active', option.dataset.lang === this.currentLang);
-        });
-    }
-    
-    switchLanguage(lang) {
-        if (lang === this.currentLang) return;
-        
+    setLanguage(lang) {
         this.currentLang = lang;
         
-        // Update display
-        this.updateCurrentDisplay();
+        // Update toggle text (show opposite language)
+        if (this.langText) {
+            this.langText.textContent = lang === 'pl' ? 'EN' : 'PL';
+        }
         
-        // Update text content
-        this.elements.forEach(element => {
-            const text = element.getAttribute(`data-${lang}`);
-            if (text) {
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    element.placeholder = text;
-                } else {
-                    element.textContent = text;
-                }
-            }
-        });
-        
-        // Update document language
-        document.documentElement.lang = lang;
+        // Update all elements
+        this.updateContent();
         
         // Save preference
         localStorage.setItem('preferredLanguage', lang);
         
-        // Dispatch custom event
-        document.dispatchEvent(new CustomEvent('languageChanged', { detail: { language: lang } }));
+        // Update document language
+        document.documentElement.lang = lang;
+        
+        // GTM Event
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'language_change', {
+                'event_category': 'User Interface',
+                'event_label': `Language changed to ${lang}`,
+                'language': lang
+            });
+        }
     }
+    
+    updateContent() {
+        // Check if mobile device
+        const isMobile = window.innerWidth <= 768;
+        
+        if (isMobile) {
+            // No transition on mobile - just update content
+            this.elements.forEach(element => {
+                const text = element.getAttribute(`data-${this.currentLang}`);
+                if (text) {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = text;
+                    } else {
+                        element.textContent = text;
+                    }
+                }
+            });
+        } else {
+            // Add smooth fade transition on desktop only
+            document.body.style.transition = 'opacity 0.3s ease';
+            document.body.style.opacity = '0.7';
+            
+            setTimeout(() => {
+                this.elements.forEach(element => {
+                    const text = element.getAttribute(`data-${this.currentLang}`);
+                    if (text) {
+                        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            element.placeholder = text;
+                        } else {
+                            element.textContent = text;
+                        }
+                    }
+                });
+                
+                // Restore opacity
+                document.body.style.opacity = '1';
+                
+                // Remove transition after animation
+                setTimeout(() => {
+                    document.body.style.transition = '';
+                }, 300);
+            }, 150);
+        }
+    }
+    
+
 }
 
 // Navigation
@@ -2025,7 +2050,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = new ContactForm();
     const floatingActionButton = new FloatingActionButton();
     const advancedCursor = new AdvancedCursor();
-    const languageSwitcher = new LanguageSwitcher();
+    const languageToggle = new LanguageToggle();
     
     console.log('All components initialized');
 });
