@@ -173,23 +173,69 @@ class AdvancedCursor {
 class LanguageSwitcher {
     constructor() {
         this.currentLang = 'pl';
-        this.elements = document.querySelectorAll('[data-pl][data-en]');
-        this.langButtons = {
-            pl: document.getElementById('lang-pl'),
-            en: document.getElementById('lang-en')
+        this.elements = document.querySelectorAll('[data-pl][data-en][data-de]');
+        this.switcher = document.getElementById('languageSwitcher');
+        this.dropdown = document.getElementById('langDropdown');
+        this.currentDisplay = document.getElementById('langCurrent');
+        this.flags = {
+            pl: '🇵🇱',
+            en: '🇺🇸', 
+            de: '🇩🇪'
         };
-        
         this.init();
     }
     
     init() {
-        if (this.langButtons.pl && this.langButtons.en) {
-            this.langButtons.pl.addEventListener('click', () => this.switchLanguage('pl'));
-            this.langButtons.en.addEventListener('click', () => this.switchLanguage('en'));
+        if (this.switcher) {
+            // Toggle dropdown on click
+            this.currentDisplay.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.toggleDropdown();
+            });
             
+            // Handle language option clicks
+            const langOptions = this.dropdown.querySelectorAll('.lang-option');
+            langOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.dataset.lang;
+                    this.switchLanguage(lang);
+                    this.closeDropdown();
+                });
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', () => {
+                this.closeDropdown();
+            });
+            
+            // Load saved language
             const savedLang = localStorage.getItem('preferredLanguage') || 'pl';
             this.switchLanguage(savedLang);
         }
+    }
+    
+    toggleDropdown() {
+        this.switcher.classList.toggle('open');
+    }
+    
+    closeDropdown() {
+        this.switcher.classList.remove('open');
+    }
+    
+    updateCurrentDisplay() {
+        const flag = this.currentDisplay.querySelector('.flag');
+        const code = this.currentDisplay.querySelector('.lang-code');
+        
+        if (flag && code) {
+            flag.textContent = this.flags[this.currentLang];
+            code.textContent = this.currentLang.toUpperCase();
+        }
+        
+        // Update active option
+        const options = this.dropdown.querySelectorAll('.lang-option');
+        options.forEach(option => {
+            option.classList.toggle('active', option.dataset.lang === this.currentLang);
+        });
     }
     
     switchLanguage(lang) {
@@ -197,11 +243,8 @@ class LanguageSwitcher {
         
         this.currentLang = lang;
         
-        // Update button states
-        if (this.langButtons.pl && this.langButtons.en) {
-            this.langButtons.pl.classList.toggle('active', lang === 'pl');
-            this.langButtons.en.classList.toggle('active', lang === 'en');
-        }
+        // Update display
+        this.updateCurrentDisplay();
         
         // Update text content
         this.elements.forEach(element => {
@@ -1982,6 +2025,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const contactForm = new ContactForm();
     const floatingActionButton = new FloatingActionButton();
     const advancedCursor = new AdvancedCursor();
+    const languageSwitcher = new LanguageSwitcher();
     
     console.log('All components initialized');
 });
