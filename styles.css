@@ -133,7 +133,7 @@ body {
     left: 0;
     color: var(--neon-pink);
     opacity: 0;
-    animation: glitchReveal 0.1s ease infinite;
+    /* animation: glitchReveal 0.1s ease infinite; */ /* Disabled to prevent page shaking */
 }
 
 .loading-tagline {
@@ -1208,18 +1208,20 @@ body {
     width: 100%;
     height: 100vh;
     background: linear-gradient(135deg, 
-        rgba(26, 26, 46, 0.98) 0%, 
-        rgba(0, 0, 0, 0.95) 100%);
-    backdrop-filter: blur(20px);
+        rgba(26, 26, 46, 0.92) 0%, 
+        rgba(0, 0, 0, 0.88) 100%);
+    backdrop-filter: blur(8px);
     z-index: 1001;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(-100%);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .epic-menu-overlay.active {
     opacity: 1;
     visibility: visible;
+    transform: translateY(0);
 }
 
 .menu-container {
@@ -1301,30 +1303,10 @@ body {
     color: var(--neon-pink);
     position: relative;
     display: inline-block;
-    animation: glitch 2s infinite;
+    /* Removed glitch animation for smoother experience */
 }
 
-.logo-glitch::before,
-.logo-glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.logo-glitch::before {
-    color: var(--neon-blue);
-    animation: glitchTop 1s infinite;
-    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-}
-
-.logo-glitch::after {
-    color: var(--neon-green);
-    animation: glitchBottom 1.5s infinite;
-    clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-}
+/* Removed glitch pseudo-elements for cleaner look */
 
 .epic-nav {
     width: 100%;
@@ -1333,17 +1315,17 @@ body {
 
 .epic-nav .nav-item {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
     opacity: 0;
-    transform: translateX(-100px);
-    animation: slideInFromLeft 0.8s ease forwards;
+    transform: translateY(20px);
+    animation: slideInFromBottom 0.5s ease forwards;
 }
 
-.epic-nav .nav-item:nth-child(1) { animation-delay: 0.1s; }
-.epic-nav .nav-item:nth-child(2) { animation-delay: 0.2s; }
-.epic-nav .nav-item:nth-child(3) { animation-delay: 0.3s; }
-.epic-nav .nav-item:nth-child(4) { animation-delay: 0.4s; }
-.epic-nav .nav-item:nth-child(5) { animation-delay: 0.5s; }
+.epic-nav .nav-item:nth-child(1) { animation-delay: 0.05s; }
+.epic-nav .nav-item:nth-child(2) { animation-delay: 0.1s; }
+.epic-nav .nav-item:nth-child(3) { animation-delay: 0.15s; }
+.epic-nav .nav-item:nth-child(4) { animation-delay: 0.2s; }
+.epic-nav .nav-item:nth-child(5) { animation-delay: 0.25s; }
 
 .epic-nav .nav-number {
     position: absolute;
@@ -1351,10 +1333,10 @@ body {
     top: 50%;
     transform: translateY(-50%);
     font-family: var(--font-mono);
-    font-size: 1.2rem;
-    font-weight: 900;
-    color: var(--neon-blue);
-    opacity: 0.7;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    opacity: 0.4;
 }
 
 .epic-nav .nav-link {
@@ -1396,8 +1378,8 @@ body {
 .epic-nav .nav-link:hover {
     border-color: var(--neon-pink);
     color: white;
-    transform: translateX(20px) scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 0, 128, 0.4);
+    transform: translateX(10px);
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.2);
 }
 
 .epic-nav .nav-text {
@@ -1412,7 +1394,7 @@ body {
 
 .epic-nav .nav-link:hover .nav-icon {
     color: white;
-    transform: scale(1.2) rotate(15deg);
+    transform: scale(1.1);
 }
 
 .epic-nav .nav-trail {
@@ -1483,8 +1465,8 @@ body {
 .social-orb:hover {
     border-color: var(--neon-pink);
     color: white;
-    transform: translateY(-10px) scale(1.1);
-    box-shadow: 0 0 25px rgba(255, 0, 128, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(255, 0, 128, 0.2);
 }
 
 .menu-footer .contact-info {
@@ -1532,31 +1514,12 @@ body {
     80% { transform: translate(2px, -2px); }
 }
 
-/* Epic Background Effects for Mobile Menu */
+/* Simplified Background Effects for Mobile Menu */
 .menu-bg-effects {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
+    display: none; /* Removed for cleaner mobile experience */
 }
 
-.bg-grid {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-        linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: gridMove 20s linear infinite;
-    opacity: 0.3;
-}
+/* Removed bg-grid for cleaner mobile menu */
 
 .bg-particles .particle {
     position: absolute;
@@ -1796,7 +1759,7 @@ body {
 
 .epic-menu-trigger:active .core-ring {
     transform: scale(0.95);
-    animation: coreRotate 1s linear infinite, vibrateCore 0.1s ease-in-out 3;
+    animation: coreRotate 1s linear infinite; /* Removed vibrateCore to prevent shaking */
 }
 
 .epic-menu-trigger:hover .trigger-orbits .orbit {
@@ -3938,6 +3901,8 @@ section {
     
     /* Disable heavy animations on mobile for better performance */
     .glitch,
+    .glitch::before,
+    .glitch::after,
     .cursor-trail,
     .cursor-follower,
     .tech-particles,
@@ -5669,36 +5634,28 @@ section {
 }
 
 .glitch::before {
-    animation: glitch 0.3s infinite;
+    animation: glitch 2s infinite; /* Slower, less jarring */
     color: var(--neon-blue);
     z-index: -1;
 }
 
 .glitch::after {
-    animation: glitch 0.3s infinite;
+    animation: glitch 2s infinite; /* Slower, less jarring */
     color: var(--neon-pink);
     z-index: -2;
 }
 
 @keyframes glitch {
-    0% {
+    0%, 90%, 100% {
         transform: translate(0);
     }
-    20% {
-        transform: translate(-2px, 2px);
+    5% {
+        transform: translate(-1px, 1px);
     }
-    40% {
-        transform: translate(-2px, -2px);
+    10% {
+        transform: translate(1px, -1px);
     }
-    60% {
-        transform: translate(2px, 2px);
-    }
-    80% {
-        transform: translate(2px, -2px);
-    }
-    100% {
-        transform: translate(0);
-    }
+    /* Much gentler glitch effect */
 }
 
 /* Hide Scrollbar */
