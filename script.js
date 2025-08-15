@@ -1764,7 +1764,7 @@ class CookieManager {
                 setTimeout(() => {
                     this.cookieBanner.classList.add('show');
                     console.log('Cookie banner displayed after loading animation');
-                }, 4500); // 4.5s - after 3s loading + 1.5s transition
+                }, 6500); // 6.5s - after 5s loading + 1.5s transition
             }
         } else {
             console.error('Cookie banner element not found!');
@@ -2028,7 +2028,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadingScreen.style.display = 'none';
                 }, 1000);
             }
-        }, 3000); // Show for 3 seconds
+        }, 5000); // Show for 5 seconds (slower loading)
     } else {
         // Returning visitor - hide loading screen immediately
         console.log('Returning visitor - skipping loading screen');

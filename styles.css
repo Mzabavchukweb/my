@@ -20,6 +20,38 @@
     animation-timing-function: ease-in-out !important;
 }
 
+/* Smooth scrolling for section navigation */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Smooth section transitions */
+section {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Safe navigation link transitions */
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
+/* Project card transitions will use existing styles */
+
+/* Smooth button transitions */
+.btn, .btn-primary, .btn-secondary {
+    transition: all 0.3s ease;
+}
+
+.btn:hover, .btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+}
+
 :root {
     /* Cyberpunk Color Palette */
     --neon-pink: #ff0080;
@@ -59,8 +91,8 @@
 }
 
 html {
-    scroll-behavior: smooth;
     overflow-x: hidden;
+    /* scroll-behavior already defined above */
 }
 
 body {
@@ -4693,7 +4725,7 @@ section {
 }
 
 .project-card:hover {
-    transform: translateY(-15px) rotateX(5deg) rotateY(5deg) scale(1.02);
+    transform: translateY(-8px) scale(1.02); /* Simplified for smoother performance */
     box-shadow: 
         0 25px 50px rgba(0, 0, 0, 0.4),
         0 0 30px rgba(255, 0, 128, 0.3),
