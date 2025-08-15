@@ -14,17 +14,10 @@
     }
 }
 
-/* Elegant smooth animations globally */
+/* Force slower animations globally to prevent shaking */
 * {
+    animation-duration: 2s !important;
     animation-timing-function: ease-in-out !important;
-}
-
-/* Smooth background animations */
-.matrix-grid,
-.floating-code,
-.tech-particles,
-.matrix-column {
-    animation-timing-function: linear !important;
 }
 
 /* Smooth scrolling for section navigation */
@@ -1706,7 +1699,7 @@ body {
         transparent 0%,
         var(--neon-green) 10%,
         transparent 20%);
-    animation: matrixRain 20s linear infinite; /* Ultra smooth - much slower */
+    animation: matrixRain 8s linear infinite;
     opacity: 0.3;
     font-family: var(--font-mono);
 }
@@ -2388,7 +2381,7 @@ section {
         linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
     background-size: 100px 100px;
-    animation: matrixScroll 60s linear infinite; /* Ultra smooth - doubled time */
+    animation: matrixScroll 30s linear infinite;
     opacity: 0.3;
 }
 
@@ -2406,7 +2399,7 @@ section {
     font-family: var(--font-mono);
     font-size: 0.9rem;
     opacity: 0.6;
-    animation: floatCode 15s ease-in-out infinite; /* Ultra smooth floating */
+    animation: floatCode 8s ease-in-out infinite;
     text-shadow: 0 0 10px currentColor;
 }
 
@@ -2441,7 +2434,7 @@ section {
     height: 6px;
     background: var(--neon-pink);
     border-radius: 50%;
-    animation: techFloat 12s ease-in-out infinite; /* Ultra smooth particles */
+    animation: techFloat 6s ease-in-out infinite;
     box-shadow: 0 0 15px currentColor;
 }
 
@@ -3953,8 +3946,7 @@ section {
         font-size: 0.8rem;
     }
     
-    /* SMART DISABLE - Keep elegant background effects */
-    /* Disable only problematic animations, keep smooth background */
+    /* ELEGANT MOBILE - Keep smooth background, disable scroll-interfering */
     
     /* Only allow essential transitions */
     .nav-link,
@@ -3964,7 +3956,7 @@ section {
         transition: opacity 0.2s ease !important;
     }
     
-    /* Disable ONLY scroll-interfering effects, keep smooth background */
+    /* DISABLE ONLY SCROLL-INTERFERING ELEMENTS */
     .glitch,
     .glitch::before,
     .glitch::after,
@@ -3975,13 +3967,16 @@ section {
     .orbit,
     .typing,
     .cursor,
-    .scroll-indicator {
+    .scroll-indicator,
+    .skill-icon:hover,
+    .energy-bar:hover,
+    .power-indicator:hover {
         animation: none !important;
         transform: none !important;
-        transition: none !important;
+        transition: opacity 0.3s ease !important;
     }
     
-    /* Allow smooth background effects on mobile */
+    /* KEEP ELEGANT BACKGROUND ANIMATIONS - ULTRA SMOOTH */
     .tech-particles,
     .floating-code,
     .matrix-grid,
@@ -3990,10 +3985,15 @@ section {
     .tech-particle,
     .matrix-column,
     .footer-bg-effects,
-    .footer-particle {
-        animation-duration: 20s !important; /* Ultra slow on mobile */
+    .footer-particle,
+    .footer-wave,
+    .logo-energy,
+    .tagline-glow,
+    .social-energy {
+        animation-duration: 30s !important;
         animation-timing-function: linear !important;
-        opacity: 0.2 !important; /* Very subtle */
+        opacity: 0.15 !important;
+        will-change: transform !important;
     }
     
     /* Hide cursor effects completely */
@@ -4002,10 +4002,11 @@ section {
         display: none !important;
     }
     
-    /* Reduce motion for better mobile experience */
+    /* Mobile gets priority over global rules */
     * {
         animation-duration: 0.2s !important;
         transition-duration: 0.2s !important;
+        animation-timing-function: ease !important;
     }
 }
 

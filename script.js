@@ -1,7 +1,7 @@
 // Matrix Effect for Background
 class MatrixEffect {
     constructor() {
-        // Enable with ULTRA SMOOTH settings
+        // ULTRA SMOOTH MATRIX - Elegancja bez problemów
         this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
         
         this.canvas = document.createElement('canvas');
@@ -34,7 +34,7 @@ class MatrixEffect {
     createRain() {
         const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
         
-        this.ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+        this.ctx.fillStyle = this.isMobile ? 'rgba(10, 10, 10, 0.08)' : 'rgba(10, 10, 10, 0.05)'; // More subtle on mobile
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.ctx.fillStyle = '#ff0080';
@@ -56,7 +56,9 @@ class MatrixEffect {
     
     animate() {
         this.createRain();
-        setTimeout(() => this.animate(), 50);
+        // Ultra smooth - much slower for elegance
+        const delay = this.isMobile ? 200 : 100; // Even slower on mobile
+        setTimeout(() => this.animate(), delay);
     }
 }
 
@@ -531,7 +533,11 @@ class Navigation {
 // Scroll Animations
 class ScrollAnimations {
     constructor() {
+        // Mobile-friendly scroll animations - only essential ones
         this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
+        if (this.isMobile) {
+            console.log('ScrollAnimations - mobile mode (essential only)');
+        }
         this.init();
     }
     
@@ -589,20 +595,14 @@ class ScrollAnimations {
     handleIntersection(entries) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // On mobile, use subtle animations only
-                if (this.isMobile) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                } else {
-                    entry.target.classList.add('visible');
-                }
+                entry.target.classList.add('visible');
                 
-                // Animate skill bars (always smooth)
+                // Animate skill bars
                 if (entry.target.classList.contains('skills-category')) {
                     this.animateSkillBars(entry.target);
                 }
                 
-                // Animate stats (always smooth)
+                // Animate stats
                 if (entry.target.classList.contains('hero-stats')) {
                     this.animateStats();
                 }
