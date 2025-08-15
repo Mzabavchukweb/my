@@ -1,12 +1,8 @@
 // Matrix Effect for Background
 class MatrixEffect {
     constructor() {
-        // Disable on mobile devices
-        this.isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
-        
-        if (this.isMobile) {
-            return; // Exit early on mobile
-        }
+        // Disabled completely to prevent performance issues and shaking
+        return;
         
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d');
@@ -159,18 +155,20 @@ class AdvancedCursor {
     }
     
     animate() {
-        // Main cursor trail
-        this.trailX += (this.mouseX - this.trailX) * 0.1;
-        this.trailY += (this.mouseY - this.trailY) * 0.1;
+        if (this.isMobile) return; // Skip animation on mobile
+        
+        // Much slower, smoother trail following
+        this.trailX += (this.mouseX - this.trailX) * 0.05; // Reduced from 0.1
+        this.trailY += (this.mouseY - this.trailY) * 0.05;
         
         if (this.trail) {
             this.trail.style.transform = `translate(${this.trailX - 10}px, ${this.trailY - 10}px)`;
         }
         
-        // Followers
+        // Followers with much more delay
         this.followers.forEach((follower, index) => {
             if (follower) {
-                const delay = (index + 1) * 0.02;
+                const delay = (index + 1) * 0.01; // Reduced from 0.02
                 this.followerPositions[index].x += (this.trailX - this.followerPositions[index].x) * delay;
                 this.followerPositions[index].y += (this.trailY - this.followerPositions[index].y) * delay;
                 
@@ -1005,11 +1003,12 @@ class GlitchEffect {
     }
     
     init() {
-        if (this.glitchElement) {
-            setInterval(() => {
-                this.triggerGlitch();
-            }, 3000 + Math.random() * 5000);
-        }
+        // Disabled glitch interval to prevent page shaking
+        // if (this.glitchElement) {
+        //     setInterval(() => {
+        //         this.triggerGlitch();
+        //     }, 3000 + Math.random() * 5000);
+        // }
     }
     
     triggerGlitch() {

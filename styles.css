@@ -5,6 +5,21 @@
     box-sizing: border-box;
 }
 
+/* GLOBAL ANIMATION PERFORMANCE OPTIMIZATION */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Force slower animations globally to prevent shaking */
+* {
+    animation-duration: 2s !important;
+    animation-timing-function: ease-in-out !important;
+}
+
 :root {
     /* Cyberpunk Color Palette */
     --neon-pink: #ff0080;
@@ -1754,7 +1769,7 @@ body {
     box-shadow: 
         0 0 30px var(--neon-pink),
         0 0 50px rgba(255, 0, 128, 0.3);
-    animation: coreRotate 2s linear infinite, activePulse 0.5s ease-in-out infinite alternate;
+    animation: coreRotate 4s linear infinite; /* Removed fast activePulse */
 }
 
 .epic-menu-trigger:active .core-ring {
@@ -1770,7 +1785,7 @@ body {
 .epic-menu-trigger:hover .trigger-label {
     color: var(--neon-pink);
     text-shadow: 0 0 10px currentColor;
-    animation: labelGlow 0.5s ease-in-out infinite alternate;
+    /* animation: labelGlow 0.5s ease-in-out infinite alternate; */ /* Disabled - too fast */
 }
 
 /* Hero Section */
@@ -2040,11 +2055,11 @@ body {
 
 .cursor {
     color: var(--neon-green);
-    animation: blink 1s infinite;
+    /* animation: blink 1s infinite; */ /* Disabled for stability */
 }
 
 .cursor.blinking {
-    animation: neonBlink 1.5s infinite;
+    /* animation: neonBlink 1.5s infinite; */ /* Disabled for stability */
 }
 
 .typing-live {
@@ -2060,7 +2075,7 @@ body {
     width: 2px;
     height: 1em;
     background: var(--neon-pink);
-    animation: typingCursor 1s infinite;
+    /* animation: typingCursor 1s infinite; */ /* Disabled for stability */
 }
 
 .output .success {
@@ -3899,7 +3914,7 @@ section {
         font-size: 0.8rem;
     }
     
-    /* Disable heavy animations on mobile for better performance */
+    /* DISABLE ALL PROBLEMATIC ANIMATIONS ON MOBILE */
     .glitch,
     .glitch::before,
     .glitch::after,
@@ -3907,9 +3922,40 @@ section {
     .cursor-follower,
     .tech-particles,
     .floating-code,
-    .matrix-grid {
+    .matrix-grid,
+    .fab-main,
+    .core-ring,
+    .orbit,
+    .particle,
+    .wave,
+    .energy-line,
+    .matrix-column,
+    .scanline,
+    .epic-title,
+    .hero-title,
+    .typing,
+    .cursor,
+    .scroll-indicator,
+    .tech-matrix-bg,
+    .floating-code-item,
+    .tech-particle,
+    .skill-icon,
+    .energy-bar,
+    .power-indicator,
+    .footer-bg-effects,
+    .footer-particle,
+    .footer-wave,
+    .logo-energy,
+    .tagline-glow,
+    .social-energy,
+    .orb-ring,
+    .divider-pulse,
+    .year-glow,
+    .cookie-icon,
+    .legal-icon {
         animation: none !important;
         transform: none !important;
+        transition: opacity 0.2s ease, transform 0.2s ease !important;
     }
     
     /* Hide cursor effects completely */
